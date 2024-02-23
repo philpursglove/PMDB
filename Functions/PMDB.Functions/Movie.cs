@@ -17,9 +17,9 @@ namespace PMDB.Functions
             _movieRepository = movieRepository;
         }
 
-        [Function("Movie")]
+        [Function("MovieList")]
         [HttpGet]
-        public IActionResult Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")] HttpRequest req)
+        public IActionResult Run([HttpTrigger(AuthorizationLevel.Anonymous, "get")] HttpRequest req)
         {
             _logger.LogInformation("C# HTTP trigger function processed a request.");
 
@@ -27,11 +27,11 @@ namespace PMDB.Functions
 
         }
 
-        [Function("Movie")]
+        [Function("MovieGet")]
         [HttpGet]
         [Route("/{id}")]
         public IActionResult Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = "Movie/{id}")] HttpRequest req, Guid id)
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "Movie/{id}")] HttpRequest req, Guid id)
         {
             _logger.LogInformation("C# HTTP trigger function processed a request.");
 
@@ -45,16 +45,43 @@ namespace PMDB.Functions
 
         }
 
-        [Function("Movie")]
+        [Function("MovieAdd")]
         [HttpPost]
-        public IActionResult Run(
+        [QueueOutput("Movie", Connection = "PMDBQueue")]
+        public MovieMessage Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Movie")]
-            HttpRequest req, Movie movie)
+            HttpRequest req, Core.Movie movie)
         {
             _logger.LogInformation("C# HTTP trigger function processed a request.");
+
+            return new MovieMessage()
+            {
+                Name = movie.Name,
+                Director = movie.Director,
+                Genre = movie.Genre,
+                YearOfRelease = movie.YearOfRelease
+            };
 
 
         }
 
+        [Function("MovieUpdate")]
+        [HttpPost]
+        [QueueOutput("Movie", Connection = "PMDBQueue")]
+        public MovieMessage Run(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "Movie")]
+            HttpRequest req, Core.Movie movie)
+        {
+            _logger.LogInformation("C# HTTP trigger function processed a request.");
+
+            return new MovieMessage()
+            {
+                Id = movie.id,
+                Name = movie.Name,
+                Director = movie.Director,
+                Genre = movie.Genre,
+                YearOfRelease = movie.YearOfRelease
+            };
+        }
     }
 }
