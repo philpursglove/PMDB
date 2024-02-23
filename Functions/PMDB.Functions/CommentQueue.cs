@@ -33,7 +33,7 @@ public class CommentQueue
                 CommentDate = commentMessage.CommentDate
             });
 
-            _movieRepository.Update(movie);
+            await _movieRepository.Update(movie);
         }
     }
 }

@@ -18,8 +18,7 @@ namespace PMDB.Functions
         }
 
         [Function("MovieList")]
-        [HttpGet]
-        public IActionResult Run([HttpTrigger(AuthorizationLevel.Anonymous, "get")] HttpRequest req)
+        public IActionResult Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route="Movie")] HttpRequest req)
         {
             _logger.LogInformation("C# HTTP trigger function processed a request.");
 
@@ -28,7 +27,6 @@ namespace PMDB.Functions
         }
 
         [Function("MovieGet")]
-        [HttpGet]
         [Route("/{id}")]
         public IActionResult Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "Movie/{id}")] HttpRequest req, Guid id)
@@ -45,8 +43,7 @@ namespace PMDB.Functions
 
         }
 
-        [Function("MovieAdd")]
-        [HttpPost]
+        [Function("MovieUpsert")]
         [QueueOutput("Movie", Connection = "PMDBQueue")]
         public MovieMessage Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Movie")]
@@ -54,34 +51,28 @@ namespace PMDB.Functions
         {
             _logger.LogInformation("C# HTTP trigger function processed a request.");
 
-            return new MovieMessage()
+            if (movie.id != null)
             {
-                Name = movie.Name,
-                Director = movie.Director,
-                Genre = movie.Genre,
-                YearOfRelease = movie.YearOfRelease
-            };
-
-
+                return new MovieMessage()
+                {
+                    Id = movie.id,
+                    Name = movie.Name,
+                    Director = movie.Director,
+                    Genre = movie.Genre,
+                    YearOfRelease = movie.YearOfRelease
+                };
+            }
+            else
+            {
+                return new MovieMessage()
+                {
+                    Name = movie.Name,
+                    Director = movie.Director,
+                    Genre = movie.Genre,
+                    YearOfRelease = movie.YearOfRelease
+                };
+            }
         }
 
-        [Function("MovieUpdate")]
-        [HttpPost]
-        [QueueOutput("Movie", Connection = "PMDBQueue")]
-        public MovieMessage Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "Movie")]
-            HttpRequest req, Core.Movie movie)
-        {
-            _logger.LogInformation("C# HTTP trigger function processed a request.");
-
-            return new MovieMessage()
-            {
-                Id = movie.id,
-                Name = movie.Name,
-                Director = movie.Director,
-                Genre = movie.Genre,
-                YearOfRelease = movie.YearOfRelease
-            };
-        }
     }
 }
