@@ -44,6 +44,7 @@ public class MovieCosmosRepository : IMovieRepository
 
     public async Task<Movie> GetMovie(Guid id)
     {
-        return await _container.ReadItemAsync<Movie>(id.ToString(), new PartitionKey(id.ToString()));
+        var result = await _container.ReadItemAsync<Movie>(id.ToString(), new PartitionKey(id.ToString()));
+        return result.Resource;
     }
 }
