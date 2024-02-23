@@ -18,7 +18,7 @@ public class CommentQueue
     }
 
     [Function(nameof(CommentQueue))]
-    public async Task Run([QueueTrigger("Movie", Connection = "PMDBQueue")] QueueMessage message)
+    public async Task Run([QueueTrigger("Comment", Connection = "PMDBQueue")] QueueMessage message)
     {
         CommentMessage commentMessage = JsonConvert.DeserializeObject<CommentMessage>(message.ToString());
 
