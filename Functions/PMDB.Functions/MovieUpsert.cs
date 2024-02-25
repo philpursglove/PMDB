@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
 using PMDB.Data;
 
@@ -8,23 +9,21 @@ namespace PMDB.Functions
     public class MovieUpsert
     {
         private readonly ILogger<MovieGet> _logger;
-        private readonly IMovieRepository _movieRepository;
 
-        public MovieUpsert(ILogger<MovieGet> logger, IMovieRepository movieRepository)
+        public MovieUpsert(ILogger<MovieGet> logger)
         {
             _logger = logger;
-            _movieRepository = movieRepository;
         }
 
         [Function("MovieUpsert")]
-        [QueueOutput("MovieList", Connection = "PMDBQueue")]
+        [QueueOutput("Movie", Connection = "PMDBQueue")]
         public MovieMessage Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Movie")]
-            HttpRequest req, Core.Movie movie)
+            HttpRequest req, [FromBody]Core.Movie movie)
         {
             _logger.LogInformation("C# HTTP trigger function processed a request.");
 
-            if (movie.id != null)
+            if (movie.id != Guid.Empty)
             {
                 return new MovieMessage()
                 {
