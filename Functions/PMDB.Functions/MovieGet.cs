@@ -19,12 +19,12 @@ namespace PMDB.Functions
 
         [Function("MovieGet")]
         [Route("/{id}")]
-        public IActionResult Run(
+        public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "Movie/{id}")] HttpRequest req, Guid id)
         {
             _logger.LogInformation("C# HTTP trigger function processed a request.");
 
-            var movie = _movieRepository.GetMovie(id);
+            var movie = await _movieRepository.GetMovie(id);
             if (movie == null)
             {
                 return new NotFoundResult();

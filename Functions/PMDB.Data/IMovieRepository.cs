@@ -4,7 +4,7 @@ namespace PMDB.Data
 {
     public interface IMovieRepository
     {
-        Task<List<Movie>> GetMovies();
+        List<Movie> GetMovies();
         Task Add(Movie movie);
         void Delete(Guid id);
         Task Update(Movie movie);

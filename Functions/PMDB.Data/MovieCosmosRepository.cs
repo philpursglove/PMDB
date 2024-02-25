@@ -14,7 +14,7 @@ public class MovieCosmosRepository : IMovieRepository
         _container = database.GetContainer("movies");
     }
 
-    public Task<List<Movie>> GetMovies()
+    public List<Movie> GetMovies()
     {
         List<Movie> movies = new List<Movie>();
         var iterator = _container.GetItemQueryIterator<Movie>();
@@ -24,7 +24,7 @@ public class MovieCosmosRepository : IMovieRepository
             movies.AddRange(response.Result);
         }
 
-        return Task.FromResult(movies);
+        return movies;
     }
 
     public async Task Add(Movie movie)
