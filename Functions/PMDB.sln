@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.34607.79
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PMDB.Functions", "PMDB.Functions\PMDB.Functions.csproj", "{2ABA0E2D-C118-4077-9CC0-591E299323DC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PMDB.Functions.API", "PMDB.Functions\PMDB.Functions.API.csproj", "{2ABA0E2D-C118-4077-9CC0-591E299323DC}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PMDB.Core", "PMDB.Core\PMDB.Core.csproj", "{5A23AE9F-22C2-4568-9DA2-25FB4B1A131F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PMDB.Data", "PMDB.Data\PMDB.Data.csproj", "{0AA5311B-F760-4424-A2A3-0D3FA006A27B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PMDB.Functions.Queues", "PMDB.Functions.Queues\PMDB.Functions.Queues.csproj", "{0E8ED729-6511-47B8-8D65-1002C1626D5C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{0AA5311B-F760-4424-A2A3-0D3FA006A27B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0AA5311B-F760-4424-A2A3-0D3FA006A27B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0AA5311B-F760-4424-A2A3-0D3FA006A27B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E8ED729-6511-47B8-8D65-1002C1626D5C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E8ED729-6511-47B8-8D65-1002C1626D5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E8ED729-6511-47B8-8D65-1002C1626D5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E8ED729-6511-47B8-8D65-1002C1626D5C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
