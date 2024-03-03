@@ -14,9 +14,14 @@ namespace PMDB.Functions.API
     public static class CommentWorkflow
     {
         [Function("CommentApprovalWorkflow")]
-        public static async Task CommentApprovalWorkflow([OrchestrationTrigger] TaskOrchestrationContext context)
+        public static async Task CommentApprovalWorkflow([OrchestrationTrigger] TaskOrchestrationContext context, CommentMessage comment)
         {
+            bool approval = await context.WaitForExternalEvent<bool>("CommentApproval");
 
+            if (approval)
+            {
+                await context.CallActivityAsync("PublishComment", comment);
+            }
         }
 
         [Function("CommentWorkflowStart")]
@@ -26,7 +31,24 @@ namespace PMDB.Functions.API
             FunctionContext executionContext,
             [FromBody] CommentMessage comment)
         {
-            await client.ScheduleNewOrchestrationInstanceAsync(nameof(CommentApprovalWorkflow));
+            await client.ScheduleNewOrchestrationInstanceAsync(nameof(CommentApprovalWorkflow), comment);
+        }
+
+        [Function("PublishComment")]
+        [QueueOutput("comments")]
+        public static async Task<CommentMessage> PublishComment([ActivityTrigger] CommentMessage comment)
+        {
+            return comment;
+        }
+
+        [Function("CommentApproval")]
+        public static async Task<HttpResponseData> CommentApproval(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", "/CommentApproval")]
+            HttpRequestData req,
+            [DurableClient] DurableTaskClient client,
+            FunctionContext executionContext)
+        {
+            await client.RaiseEventAsync(req.Query["workflowId"], "CommentApproval", true);
         }
     }
 }
