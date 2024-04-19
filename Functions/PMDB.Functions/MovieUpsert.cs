@@ -2,7 +2,6 @@
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
-using PMDB.Data;
 
 namespace PMDB.Functions
 {
@@ -15,11 +14,11 @@ namespace PMDB.Functions
             _logger = logger;
         }
 
-        [Function("MovieUpsert")]
+        [Function(nameof(MovieUpsert))]
         [QueueOutput("Movie", Connection = "PMDBQueue")]
         public MovieMessage Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Movie")]
-            HttpRequest req, [FromBody]Core.Movie movie)
+            HttpRequest req, [FromBody] Core.Movie movie)
         {
             _logger.LogInformation("C# HTTP trigger function processed a request.");
 
