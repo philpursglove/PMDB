@@ -27,7 +27,7 @@ namespace PMDB.Functions.API
         [Function("CommentWorkflowStart")]
         public static async Task<HttpResponseData> CommentWorkflowStart(
             [HttpTrigger(AuthorizationLevel.Anonymous, "post", "/Comment")] HttpRequestData req,
-            [DurableClient] DurableTaskClient client,
+            [DurableClient] DurableClientContext context,
             FunctionContext executionContext,
             [FromBody] CommentMessage comment)
         {
