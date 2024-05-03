@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using PMDB.Data;
 
-namespace PMDB.Functions
+namespace PMDB.Functions.Queues
 {
     public class MovieQueue
     {
@@ -36,7 +36,7 @@ namespace PMDB.Functions
             }
             else
             {
-                movie = new PMDB.Core.Movie()
+                movie = new Core.Movie()
                 {
                     id = Guid.NewGuid(),
                     Name = movieUpdate.Name,

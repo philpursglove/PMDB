@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Azure.Functions.Worker;
+﻿using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.DurableTask;
 using Microsoft.DurableTask.Client;
+using System.Net;
 
 namespace PMDB.Functions.API
 {
@@ -29,9 +25,14 @@ namespace PMDB.Functions.API
             [HttpTrigger(AuthorizationLevel.Anonymous, "post", "/Comment")] HttpRequestData req,
             [DurableClient] DurableClientContext context,
             FunctionContext executionContext,
-            [FromBody] CommentMessage comment)
+            [Microsoft.Azure.Functions.Worker.Http.FromBody] CommentMessage comment)
         {
             await client.ScheduleNewOrchestrationInstanceAsync(nameof(CommentApprovalWorkflow), comment);
+
+            var response = HttpResponseData.CreateResponse(req);
+            response.StatusCode = HttpStatusCode.OK;
+
+            return response;
         }
 
         [Function("PublishComment")]
@@ -49,6 +50,11 @@ namespace PMDB.Functions.API
             FunctionContext executionContext)
         {
             await client.RaiseEventAsync(req.Query["workflowId"], "CommentApproval", true);
+
+            var response = HttpResponseData.CreateResponse(req);
+            response.StatusCode = HttpStatusCode.OK;
+
+            return response;
         }
     }
 }

@@ -17,7 +17,7 @@ namespace PMDB.Functions
             _movieRepository = movieRepository;
         }
 
-        [Function("MovieList")]
+        [Function(nameof(MovieList))]
         public IActionResult Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "Movie")] HttpRequest req)
         {
             _logger.LogInformation("C# HTTP trigger function processed a request.");
