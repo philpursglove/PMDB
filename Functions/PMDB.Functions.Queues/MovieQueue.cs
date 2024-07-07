@@ -36,7 +36,7 @@ namespace PMDB.Functions.Queues
             }
             else
             {
-                movie = new PMDB.Core.Movie()
+                movie = new Core.Movie()
                 {
                     id = Guid.NewGuid(),
                     Name = movieUpdate.Name,

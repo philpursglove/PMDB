@@ -14,11 +14,11 @@ namespace PMDB.Functions.API
             _logger = logger;
         }
 
-        [Function("MovieUpsert")]
+        [Function(nameof(MovieUpsert))]
         [QueueOutput("Movie", Connection = "PMDBQueue")]
         public MovieMessage Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Movie")]
-            HttpRequest req, [FromBody]Core.Movie movie)
+            HttpRequest req, [FromBody] Core.Movie movie)
         {
             _logger.LogInformation("C# HTTP trigger function processed a request.");
 

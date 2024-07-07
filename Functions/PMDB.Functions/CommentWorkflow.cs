@@ -2,6 +2,7 @@
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.DurableTask;
 using Microsoft.DurableTask.Client;
+using System.Net;
 
 namespace PMDB.Functions.API
 {
@@ -21,11 +22,16 @@ namespace PMDB.Functions.API
         [Function("CommentWorkflowStart")]
         public static async Task CommentWorkflowStart(
             [HttpTrigger(AuthorizationLevel.Anonymous, "post", "/Comment")] HttpRequestData req,
-            [DurableClient] DurableTaskClient client,
+            [DurableClient] DurableClientContext context,
             FunctionContext executionContext,
-            [FromBody] CommentMessage comment)
+            [Microsoft.Azure.Functions.Worker.Http.FromBody] CommentMessage comment)
         {
             await client.ScheduleNewOrchestrationInstanceAsync(nameof(CommentApprovalWorkflow), comment);
+
+            var response = HttpResponseData.CreateResponse(req);
+            response.StatusCode = HttpStatusCode.OK;
+
+            return response;
         }
 
         [Function("PublishComment")]
@@ -43,6 +49,11 @@ namespace PMDB.Functions.API
             FunctionContext executionContext)
         {
             await client.RaiseEventAsync(req.Query["workflowId"], "CommentApproval", true);
+
+            var response = HttpResponseData.CreateResponse(req);
+            response.StatusCode = HttpStatusCode.OK;
+
+            return response;
         }
     }
 }

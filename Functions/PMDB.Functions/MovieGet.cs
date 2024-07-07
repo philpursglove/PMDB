@@ -17,7 +17,7 @@ namespace PMDB.Functions.API
             _movieRepository = movieRepository;
         }
 
-        [Function("MovieGet")]
+        [Function(nameof(MovieGet))]
         [Route("/{id}")]
         public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "Movie/{id}")] HttpRequest req, Guid id)
