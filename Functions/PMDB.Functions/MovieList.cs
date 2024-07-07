@@ -4,7 +4,7 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 using PMDB.Data;
 
-namespace PMDB.Functions
+namespace PMDB.Functions.API
 {
     public class MovieList
     {
@@ -23,11 +23,6 @@ namespace PMDB.Functions
             _logger.LogInformation("C# HTTP trigger function processed a request.");
 
             return new OkObjectResult(_movieRepository.GetMovies());
-
         }
-
-
-
-
     }
 }

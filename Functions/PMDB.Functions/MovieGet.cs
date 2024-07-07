@@ -4,7 +4,7 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 using PMDB.Data;
 
-namespace PMDB.Functions
+namespace PMDB.Functions.API
 {
     public class MovieGet
     {
@@ -31,8 +31,6 @@ namespace PMDB.Functions
             }
 
             return new OkObjectResult(movie);
-
         }
-
     }
 }

@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Azure.Functions.Worker;
+﻿using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.DurableTask;
 using Microsoft.DurableTask.Client;
 
 namespace PMDB.Functions.API
 {
-
     public static class CommentWorkflow
     {
         [Function("CommentApprovalWorkflow")]
@@ -25,7 +19,7 @@ namespace PMDB.Functions.API
         }
 
         [Function("CommentWorkflowStart")]
-        public static async Task<HttpResponseData> CommentWorkflowStart(
+        public static async Task CommentWorkflowStart(
             [HttpTrigger(AuthorizationLevel.Anonymous, "post", "/Comment")] HttpRequestData req,
             [DurableClient] DurableTaskClient client,
             FunctionContext executionContext,
@@ -42,7 +36,7 @@ namespace PMDB.Functions.API
         }
 
         [Function("CommentApproval")]
-        public static async Task<HttpResponseData> CommentApproval(
+        public static async Task CommentApproval(
             [HttpTrigger(AuthorizationLevel.Anonymous, "post", "/CommentApproval")]
             HttpRequestData req,
             [DurableClient] DurableTaskClient client,

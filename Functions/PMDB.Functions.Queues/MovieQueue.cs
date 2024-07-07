@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using PMDB.Data;
 
-namespace PMDB.Functions
+namespace PMDB.Functions.Queues
 {
     public class MovieQueue
     {
